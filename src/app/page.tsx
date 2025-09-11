@@ -1,501 +1,540 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import {
-  Camera,
   Sparkles,
-  Wand2,
-  Users,
-  Check,
-  Globe,
-  Mail,
-  ArrowRight,
-  Star,
-  Zap,
-  Crown,
-  Gift,
-  Bell,
   TrendingUp,
+  ArrowRight,
+  Check,
+  Camera,
+  Mail,
+  Globe,
+  Crown,
+  Users,
+  Zap,
+  Gift,
+  Star,
+  Bell,
 } from "lucide-react";
 import PopupComponent from "./waitlist/components/PopupComponent";
 import BeforeToAfter from "./waitlist/components/BeforeToAfter";
 
-
 export default function AIPhotoEditorWaitlist() {
-  const [email, setEmail] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const [language, setLanguage] = useState("en");
-  const [waitlistCount, setWaitlistCount] = useState(24);
+const [email, setEmail] = useState("");
 
-  const translations = {
-    en: {
-      options: {
-        en: "English",
-        es: "Spanish",
+const [isSubmitted, setIsSubmitted] = useState(false);
+
+
+
+const [language, setLanguage] = useState("en");
+
+const [waitlistCount, setWaitlistCount] = useState(24);
+
+
+ 
+interface TranslationContent {
+  options: { en: string; es: string };
+  hero: {
+    badge: string;
+    title: string;
+    subtitle: string;
+    cta: string;
+    emailPlaceholder: string;
+    urgency: string;
+    people: string;
+  };
+  features: {
+    title: string;
+    subtitle: string;
+    list: {
+      icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+      title: string;
+      description: string;
+    }[];
+  };
+  comparison: {
+    title: string;
+    subtitle: string;
+    table: {
+      headers: string[];
+    };
+    items: {
+      feature: string;
+      us: boolean | string;
+      others: boolean | string;
+    }[];
+  };
+  social_proof: {
+    title: string;
+    testimonials: {
+      name: string;
+      role: string;
+      content: string;
+      rating: number;
+    }[];
+  };
+  pricing_preview: {
+    title: string;
+    subtitle: string;
+    plans: {
+      name: string;
+      price: string;
+      originalPrice: string;
+      period: string;
+      badge: string;
+      features: string[];
+    }[];
+  };
+  benefits: {
+    title: string;
+    list: {
+      icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+      title: string;
+      description: string;
+    }[];
+  };
+  urgency: {
+    title: string;
+    subtitle: string;
+    countdown: string;
+  };
+  waitlist: {
+    title: string;
+    subtitle: string;
+    success: {
+      title: string;
+      message: string;
+      social: string;
+      shared: string[];
+    };
+  };
+  footer: {
+    copyright: string;
+    privacy: string;
+    terms: string;
+  };
+}
+
+const translations: Record<string, TranslationContent> = {
+  en: {
+    options: {
+      en: "English",
+      es: "Spanish",
+    },
+    hero: {
+      badge: "🚀 Exclusive Early Access",
+      title: "Sell More with Stunning AI Product Photos",
+      subtitle:
+        "Turn simple product shots into professional, high-converting photos in seconds.",
+      cta: "Join the Waitlist - It's Free",
+      emailPlaceholder: "Enter your email for early access",
+      urgency: "⚡ Limited beta spots available",
+      people: "people have already joined",
+    },
+    features: {
+      title: "Why Sellers Love This Tool",
+      subtitle:
+        "Designed for e-commerce, marketing, and small businesses that want to sell more.",
+      list: [
+        {
+          icon: Crown,
+          title: "Studio-Quality Photos",
+          description:
+            "Get results worth $500+ without a photo shoot. Luxury, lifestyle, and commercial styles included.",
+        },
+        {
+          icon: Users,
+          title: "Lifestyle & Branding Integration",
+          description:
+            "Add models, brand text, or clean product-only shots — all generated instantly.",
+        },
+        {
+          icon: Zap,
+          title: "Lightning-Fast Results",
+          description:
+            "From 5–10 minutes down to just 8 seconds. Speed that drives conversions.",
+        },
+        {
+          icon: Globe,
+          title: "Ready for Global Sellers",
+          description:
+            "Full English & Spanish support. Made for international e-commerce and marketing teams.",
+        },
+      ],
+    },
+    comparison: {
+      title: "See the Difference",
+      subtitle: "Why sellers choose us over PhotoRoom, Pixlr, and others.",
+      table: {
+        headers: ["Features", "Our Solution", "Other Solutions"],
       },
-      hero: {
-        badge: "🚀 Exclusive Early Access",
-        title: "Sell More with Stunning AI Product Photos",
-        subtitle:
-          "Turn simple product shots into professional, high-converting photos in seconds.",
-        cta: "Join the Waitlist - It's Free",
-        emailPlaceholder: "Enter your email for early access",
-        urgency: "⚡ Limited beta spots available",
-        people: "people have already joined",
-      },
-      features: {
-        title: "Why Sellers Love This Tool",
-        subtitle:
-          "Designed for e-commerce, marketing, and small businesses that want to sell more.",
-        list: [
-          {
-            icon: Crown,
-            title: "Studio-Quality Photos",
-            description:
-              "Get results worth $500+ without a photo shoot. Luxury, lifestyle, and commercial styles included.",
-          },
-          {
-            icon: Users,
-            title: "Lifestyle & Branding Integration",
-            description:
-              "Add models, brand text, or clean product-only shots — all generated instantly.",
-          },
-          {
-            icon: Zap,
-            title: "Lightning-Fast Results",
-            description:
-              "From 5–10 minutes down to just 8 seconds. Speed that drives conversions.",
-          },
-          {
-            icon: Globe,
-            title: "Ready for Global Sellers",
-            description:
-              "Full English & Spanish support. Made for international e-commerce and marketing teams.",
-          },
-        ],
-      },
-      comparison: {
-        title: "See the Difference",
-        subtitle: "Why sellers choose us over PhotoRoom, Pixlr, and others.",
-        table: {
-          headers: ["Features", "Our Solution", "Other Solutions"],
-          items: [
-            {
-              feature: "Estilos de Fotografía Profesional",
-              us: true,
-              others: "Básico",
-            },
-            {
-              feature: "Integración con Modelos Lifestyle",
-              us: true,
-              others: false,
-            },
-            {
-              feature: "Calidad Comercial Real",
-              us: true,
-              others: "Limitada",
-            },
-            {
-              feature: "Procesamiento Ultra-Rápido (8s)",
-              us: true,
-              others: "5-10 min",
-            },
-            {
-              feature: "Interfaz Multilingüe",
-              us: true,
-              others: false,
-            },
-            {
-              feature: "Plantillas para Negocios",
-              us: true,
-              others: "Básico",
-            },
+      items: [
+        {
+          feature: "Professional Photography Styles",
+          us: true,
+          others: "Basic",
+        },
+        {
+          feature: "Lifestyle Model Integration",
+          us: true,
+          others: false,
+        },
+        {
+          feature: "Commercial-Grade Quality",
+          us: true,
+          others: "Limited",
+        },
+        {
+          feature: "Ultra-Fast Processing (8s)",
+          us: true,
+          others: "5-10 min",
+        },
+        {
+          feature: "Multilingual Interface",
+          us: true,
+          others: false,
+        },
+        {
+          feature: "Business-Ready Templates",
+          us: true,
+          others: "Basic",
+        },
+      ],
+    },
+    social_proof: {
+      title: "What Business Owners Are Saying",
+      testimonials: [
+        {
+          name: "Sarah Martinez",
+          role: "E-commerce Director",
+          content:
+            "Finally, a tool that makes our products look professional without extra cost.",
+          rating: 5,
+        },
+        {
+          name: "David Chen",
+          role: "Marketing Agency Owner",
+          content:
+            "We create content 10x faster and clients love the results. Total game changer.",
+          rating: 5,
+        },
+        {
+          name: "Maria Rodriguez",
+          role: "Small Business Owner",
+          content:
+            "Professional shoots were too expensive. Now my products stand out online.",
+          rating: 5,
+        },
+      ],
+    },
+    pricing_preview: {
+      title: "Exclusive Launch Pricing",
+      subtitle: "Join the waitlist to unlock 50% off",
+      plans: [
+        {
+          name: "Starter",
+          price: "$9",
+          originalPrice: "$19",
+          period: "/month",
+          badge: "50% OFF",
+          features: [
+            "100 AI photos/month",
+            "Professional styles",
+            "Basic templates",
           ],
         },
-        items: [
-          {
-            feature: "Professional Photography Styles",
-            us: true,
-            others: "Basic",
-          },
-          {
-            feature: "Lifestyle Model Integration",
-            us: true,
-            others: false,
-          },
-          {
-            feature: "Commercial-Grade Quality",
-            us: true,
-            others: "Limited",
-          },
-          {
-            feature: "Ultra-Fast Processing (8s)",
-            us: true,
-            others: "5-10 min",
-          },
-          {
-            feature: "Multilingual Interface",
-            us: true,
-            others: false,
-          },
-          {
-            feature: "Business-Ready Templates",
-            us: true,
-            others: "Basic",
-          },
-        ],
-      },
-      social_proof: {
-        title: "What Business Owners Are Saying",
-        testimonials: [
-          {
-            name: "Sarah Martinez",
-            role: "E-commerce Director",
-            content:
-              "Finally, a tool that makes our products look professional without extra cost.",
-            rating: 5,
-          },
-          {
-            name: "David Chen",
-            role: "Marketing Agency Owner",
-            content:
-              "We create content 10x faster and clients love the results. Total game changer.",
-            rating: 5,
-          },
-          {
-            name: "Maria Rodriguez",
-            role: "Small Business Owner",
-            content:
-              "Professional shoots were too expensive. Now my products stand out online.",
-            rating: 5,
-          },
-        ],
-      },
-      pricing_preview: {
-        title: "Exclusive Launch Pricing",
-        subtitle: "Join the waitlist to unlock 50% off",
-        plans: [
-          {
-            name: "Starter",
-            price: "$9",
-            originalPrice: "$19",
-            period: "/month",
-            badge: "50% OFF",
-            features: [
-              "100 AI photos/month",
-              "Professional styles",
-              "Basic templates",
-            ],
-          },
-          {
-            name: "Pro",
-            price: "$19",
-            originalPrice: "$39",
-            period: "/month",
-            badge: "MOST POPULAR",
-            features: [
-              "500 AI photos/month",
-              "All professional styles",
-              "Lifestyle models",
-              "Priority processing",
-            ],
-          },
-          {
-            name: "Business",
-            price: "$49",
-            originalPrice: "$99",
-            period: "/month",
-            badge: "ENTERPRISE",
-            features: [
-              "Unlimited photos",
-              "Custom branding",
-              "API access",
-              "Dedicated support",
-            ],
-          },
-        ],
-      },
-      benefits: {
-        title: "Join the Waitlist & Get",
-        list: [
-          {
-            icon: Crown,
-            title: "VIP Early Access",
-            description:
-              "Be among the first to test our exclusive beta version.",
-          },
-          {
-            icon: Gift,
-            title: "50% Off Launch Discount",
-            description: "Special pricing for waitlist members only.",
-          },
-          {
-            icon: Star,
-            title: "Free Premium Templates",
-            description: "Professional product photo templates included.",
-          },
-          {
-            icon: Bell,
-            title: "Priority Support",
-            description: "Get direct feedback from our team.",
-          },
-        ],
-      },
-      urgency: {
-        title: "Beta Spots Are Limited",
-        subtitle: "Only a small number of users will get early access.",
-        countdown: "Join before spots are gone.",
-      },
-      waitlist: {
-        title: "Ready to Boost Your Sales with Better Photos?",
-        subtitle:
-          "Be the first to experience AI product photography that sells.",
-        success: {
-          title: "🎉 You're In!",
-          message:
-            "Your spot is secured. We’ll notify you as soon as we launch with your 50% discount code.",
-          social: "Share with friends and help us grow:",
-          shared: ["Share in Reddit", "Share in X"],
+        {
+          name: "Pro",
+          price: "$19",
+          originalPrice: "$39",
+          period: "/month",
+          badge: "MOST POPULAR",
+          features: [
+            "500 AI photos/month",
+            "All professional styles",
+            "Lifestyle models",
+            "Priority processing",
+          ],
         },
-      },
-      footer: {
-        copyright: "© 2025 AI Product Photography. All rights reserved.",
-        privacy: "Privacy Policy",
-        terms: "Terms of Service",
+        {
+          name: "Business",
+          price: "$49",
+          originalPrice: "$99",
+          period: "/month",
+          badge: "ENTERPRISE",
+          features: [
+            "Unlimited photos",
+            "Custom branding",
+            "API access",
+            "Dedicated support",
+          ],
+        },
+      ],
+    },
+    benefits: {
+      title: "Join the Waitlist & Get",
+      list: [
+        {
+          icon: Crown,
+          title: "VIP Early Access",
+          description: "Be among the first to test our exclusive beta version.",
+        },
+        {
+          icon: Gift,
+          title: "50% Off Launch Discount",
+          description: "Special pricing for waitlist members only.",
+        },
+        {
+          icon: Star,
+          title: "Free Premium Templates",
+          description: "Professional product photo templates included.",
+        },
+        {
+          icon: Bell,
+          title: "Priority Support",
+          description: "Get direct feedback from our team.",
+        },
+      ],
+    },
+    urgency: {
+      title: "Beta Spots Are Limited",
+      subtitle: "Only a small number of users will get early access.",
+      countdown: "Join before spots are gone.",
+    },
+    waitlist: {
+      title: "Ready to Boost Your Sales with Better Photos?",
+      subtitle: "Be the first to experience AI product photography that sells.",
+      success: {
+        title: "🎉 You're In!",
+        message:
+          "Your spot is secured. We’ll notify you as soon as we launch with your 50% discount code.",
+        social: "Share with friends and help us grow:",
+        shared: ["Share in Reddit", "Share in X"],
       },
     },
-
-    es: {
-      options: {
-        en: "Inglés",
-        es: "Español",
-      },
-      hero: {
-        badge: "🚀 Acceso Anticipado Exclusivo",
-        title: "Vende Más Con Fotos De Producto Profesionales",
-        subtitle:
-          "Convierte fotos caseras en imágenes irresistibles que atraen y venden más, en segundos.",
-        cta: "Unirse a la Lista de Espera - Es Gratis",
-        emailPlaceholder: "Introduce tu email para acceso anticipado",
-        urgency: "⚡ Plazas beta limitadas",
-        people: "personas ya se han unido",
-      },
-      features: {
-        title: "Para Quién es Esta Herramienta",
-        subtitle:
-          "Hecha para e-commerce, marketing y pequeños negocios que quieren aumentar sus ventas.",
-        list: [
-          {
-            icon: Crown,
-            title: "Fotos con Calidad de Estudio",
-            description:
-              "Resultados valorados en más de 500 € sin necesidad de sesión de fotos. Incluye estilos de lujo, lifestyle y comercial.",
-          },
-          {
-            icon: Users,
-            title: "Modelos y Branding Integrados",
-            description:
-              "Agrega modelos lifestyle, texto de marca o fotos de producto aisladas al instante.",
-          },
-          {
-            icon: Zap,
-            title: "Resultados Ultra-Rápidos",
-            description:
-              "De 5-10 minutos a solo 8 segundos en promedio. Más velocidad, más conversiones.",
-          },
-          {
-            icon: Globe,
-            title: "Pensado para Vendedores Globales",
-            description:
-              "Soporte en español e inglés. Diseñado para negocios internacionales.",
-          },
-        ],
-      },
-      comparison: {
-        title: "Descubre la Diferencia",
-        subtitle:
-          "Por qué los vendedores nos eligen sobre PhotoRoom, Pixlr y otros.",
-        table: {
-          headers: ["Características", "Nuestra Solución", "Otras"],
+    footer: {
+      copyright: "© 2025 AI Product Photography. All rights reserved.",
+      privacy: "Privacy Policy",
+      terms: "Terms of Service",
+    },
+  },
+  es: {
+    options: {
+      en: "Inglés",
+      es: "Español",
+    },
+    hero: {
+      badge: "🚀 Acceso Anticipado Exclusivo",
+      title: "Vende Más Con Fotos De Producto Profesionales",
+      subtitle:
+        "Convierte fotos caseras en imágenes irresistibles que atraen y venden más, en segundos.",
+      cta: "Unirse a la Lista de Espera - Es Gratis",
+      emailPlaceholder: "Introduce tu email para acceso anticipado",
+      urgency: "⚡ Plazas beta limitadas",
+      people: "personas ya se han unido",
+    },
+    features: {
+      title: "Para Quién es Esta Herramienta",
+      subtitle:
+        "Hecha para e-commerce, marketing y pequeños negocios que quieren aumentar sus ventas.",
+      list: [
+        {
+          icon: Crown,
+          title: "Fotos con Calidad de Estudio",
+          description:
+            "Resultados valorados en más de 500 € sin necesidad de sesión de fotos. Incluye estilos de lujo, lifestyle y comercial.",
         },
-        items: [
-          {
-            feature: "Estilos de Fotografía Profesional",
-            us: true,
-            others: "Básico",
-          },
-          {
-            feature: "Integración con Modelos Lifestyle",
-            us: true,
-            others: false,
-          },
-          {
-            feature: "Calidad Comercial Real",
-            us: true,
-            others: "Limitada",
-          },
-          {
-            feature: "Procesamiento Ultra-Rápido (8s)",
-            us: true,
-            others: "5-10 min",
-          },
-          {
-            feature: "Interfaz Multilingüe",
-            us: true,
-            others: false,
-          },
-          {
-            feature: "Plantillas para Negocios",
-            us: true,
-            others: "Básico",
-          },
-        ],
-      },
-      social_proof: {
-        title: "Lo que Dicen los Negocios",
-        testimonials: [
-          {
-            name: "Sarah Martinez",
-            role: "Directora de E-commerce",
-            content:
-              "Por fin una herramienta que hace que mis productos se vean profesionales sin gastar más.",
-            rating: 5,
-          },
-          {
-            name: "David Chen",
-            role: "Agencia de Marketing",
-            content:
-              "Creamos contenido 10 veces más rápido y a los clientes les encanta. Un cambio total.",
-            rating: 5,
-          },
-          {
-            name: "Maria Rodriguez",
-            role: "Dueña de Pequeño Negocio",
-            content:
-              "Las sesiones eran demasiado caras. Ahora mis productos destacan online.",
-            rating: 5,
-          },
-        ],
-      },
-      pricing_preview: {
-        title: "Precios Exclusivos de Lanzamiento",
-        subtitle: "Accede a 50% de descuento uniéndote a la lista",
-        plans: [
-          {
-            name: "Starter",
-            price: "$9",
-            originalPrice: "$19",
-            period: "/mes",
-            badge: "50% DESCUENTO",
-            features: [
-              "100 fotos con IA/mes",
-              "Estilos profesionales",
-              "Plantillas básicas",
-            ],
-          },
-          {
-            name: "Pro",
-            price: "$19",
-            originalPrice: "$39",
-            period: "/mes",
-            badge: "MÁS POPULAR",
-            features: [
-              "500 fotos con IA/mes",
-              "Todos los estilos profesionales",
-              "Modelos Lifestyle",
-              "Procesamiento prioritario",
-            ],
-          },
-          {
-            name: "Business",
-            price: "$49",
-            originalPrice: "$99",
-            period: "/mes",
-            badge: "EMPRESARIAL",
-            features: [
-              "Fotos ilimitadas",
-              "Branding personalizado",
-              "Acceso a la API",
-              "Soporte dedicado",
-            ],
-          },
-        ],
-      },
-      benefits: {
-        title: "Únete a la Lista de Espera y Obtén",
-        list: [
-          {
-            icon: Crown,
-            title: "Acceso VIP Anticipado",
-            description: "Sé de los primeros en probar nuestra beta exclusiva.",
-          },
-          {
-            icon: Gift,
-            title: "50% de Descuento",
-            description: "Precios especiales solo para la lista de espera.",
-          },
-          {
-            icon: Star,
-            title: "Plantillas Premium Gratis",
-            description: "Incluye plantillas de fotografía profesional.",
-          },
-          {
-            icon: Bell,
-            title: "Soporte Prioritario",
-            description: "Línea directa con nuestro equipo de desarrollo.",
-          },
-        ],
-      },
-      urgency: {
-        title: "Acceso Beta Limitado",
-        subtitle: "Aceptaremos solo un número reducido de usuarios.",
-        countdown: "Únete antes de que se agoten.",
-      },
-      waitlist: {
-        title: "¿Listo para Vender Más con Mejores Fotos?",
-        subtitle:
-          "Sé de los primeros en experimentar la fotografía de producto con IA.",
-        success: {
-          title: "🎉 ¡Ya Estás Dentro!",
-          message:
-            "Tu plaza está asegurada. Te avisaremos en el lanzamiento junto con tu descuento exclusivo del 50%.",
-          social: "Compártelo con tus amigos y ayúdanos a crecer:",
-          shared: ["Compartir en Reddit", "Compartir en X"],
+        {
+          icon: Users,
+          title: "Modelos y Branding Integrados",
+          description:
+            "Agrega modelos lifestyle, texto de marca o fotos de producto aisladas al instante.",
         },
+        {
+          icon: Zap,
+          title: "Resultados Ultra-Rápidos",
+          description:
+            "De 5-10 minutos a solo 8 segundos en promedio. Más velocidad, más conversiones.",
+        },
+        {
+          icon: Globe,
+          title: "Pensado para Vendedores Globales",
+          description:
+            "Soporte en español e inglés. Diseñado para negocios internacionales.",
+        },
+      ],
+    },
+    comparison: {
+      title: "Descubre la Diferencia",
+      subtitle: "Por qué los vendedores nos eligen sobre PhotoRoom, Pixlr y otros.",
+      table: {
+        headers: ["Características", "Nuestra Solución", "Otras"],
       },
-      footer: {
-        copyright:
-          "© 2025 AI Product Photography. Todos los derechos reservados.",
-        privacy: "Política de Privacidad",
-        terms: "Términos de Servicio",
+      items: [
+        {
+          feature: "Estilos de Fotografía Profesional",
+          us: true,
+          others: "Básico",
+        },
+        {
+          feature: "Integración con Modelos Lifestyle",
+          us: true,
+          others: false,
+        },
+        {
+          feature: "Calidad Comercial Real",
+          us: true,
+          others: "Limitada",
+        },
+        {
+          feature: "Procesamiento Ultra-Rápido (8s)",
+          us: true,
+          others: "5-10 min",
+        },
+        {
+          feature: "Interfaz Multilingüe",
+          us: true,
+          others: false,
+        },
+        {
+          feature: "Plantillas para Negocios",
+          us: true,
+          others: "Básico",
+        },
+      ],
+    },
+    social_proof: {
+      title: "Lo que Dicen los Negocios",
+      testimonials: [
+        {
+          name: "Sarah Martinez",
+          role: "Directora de E-commerce",
+          content:
+            "Por fin una herramienta que hace que mis productos se vean profesionales sin gastar más.",
+          rating: 5,
+        },
+        {
+          name: "David Chen",
+          role: "Agencia de Marketing",
+          content:
+            "Creamos contenido 10 veces más rápido y a los clientes les encanta. Un cambio total.",
+          rating: 5,
+        },
+        {
+          name: "Maria Rodriguez",
+          role: "Dueña de Pequeño Negocio",
+          content:
+            "Las sesiones eran demasiado caras. Ahora mis productos destacan online.",
+          rating: 5,
+        },
+      ],
+    },
+    pricing_preview: {
+      title: "Precios Exclusivos de Lanzamiento",
+      subtitle: "Accede a 50% de descuento uniéndote a la lista",
+      plans: [
+        {
+          name: "Starter",
+          price: "$9",
+          originalPrice: "$19",
+          period: "/mes",
+          badge: "50% DESCUENTO",
+          features: [
+            "100 fotos con IA/mes",
+            "Estilos profesionales",
+            "Plantillas básicas",
+          ],
+        },
+        {
+          name: "Pro",
+          price: "$19",
+          originalPrice: "$39",
+          period: "/mes",
+          badge: "MÁS POPULAR",
+          features: [
+            "500 fotos con IA/mes",
+            "Todos los estilos profesionales",
+            "Modelos Lifestyle",
+            "Procesamiento prioritario",
+          ],
+        },
+        {
+          name: "Business",
+          price: "$49",
+          originalPrice: "$99",
+          period: "/mes",
+          badge: "EMPRESARIAL",
+          features: [
+            "Fotos ilimitadas",
+            "Branding personalizado",
+            "Acceso a la API",
+            "Soporte dedicado",
+          ],
+        },
+      ],
+    },
+    benefits: {
+      title: "Únete a la Lista de Espera y Obtén",
+      list: [
+        {
+          icon: Crown,
+          title: "Acceso VIP Anticipado",
+          description: "Sé de los primeros en probar nuestra beta exclusiva.",
+        },
+        {
+          icon: Gift,
+          title: "50% de Descuento",
+          description: "Precios especiales solo para la lista de espera.",
+        },
+        {
+          icon: Star,
+          title: "Plantillas Premium Gratis",
+          description: "Incluye plantillas de fotografía profesional.",
+        },
+        {
+          icon: Bell,
+          title: "Soporte Prioritario",
+          description: "Línea directa con nuestro equipo de desarrollo.",
+        },
+      ],
+    },
+    urgency: {
+      title: "Acceso Beta Limitado",
+      subtitle: "Aceptaremos solo un número reducido de usuarios.",
+      countdown: "Únete antes de que se agoten.",
+    },
+    waitlist: {
+      title: "¿Listo para Vender Más con Mejores Fotos?",
+      subtitle: "Sé de los primeros en experimentar la fotografía de producto con IA.",
+      success: {
+        title: "🎉 ¡Ya Estás Dentro!",
+        message:
+          "Tu plaza está asegurada. Te avisaremos en el lanzamiento junto con tu descuento exclusivo del 50%.",
+        social: "Compártelo con tus amigos y ayúdanos a crecer:",
+        shared: ["Compartir en Reddit", "Compartir en X"],
       },
     },
-  };
+    footer: {
+      copyright: "© 2025 AI Product Photography. Todos los derechos reservados.",
+      privacy: "Política de Privacidad",
+      terms: "Términos de Servicio",
+    },
+  },
+};
+const t = translations[language] || translations.en;
 
-  const t = translations[language] || translations.en;
-
-  const handleSubmit = async () => {
-  await fetch("/api/sendEmail", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email }),
-  });
+  const handleSubmit = async (): Promise<void> => {
+    await fetch("/api/sendEmail", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
     setIsSubmitted(true);
     setWaitlistCount(waitlistCount + 1);
     console.log("Email submitted:", email);
-};
-
-
-  const renderStars = (rating) => {
-    return Array.from({ length: 5 }, (_, i) => (
-      <Star
-        key={i}
-        className={`h-4 w-4 ${
-          i < rating ? "text-yellow-400 fill-current" : "text-gray-400"
-        }`}
-      />
-    ));
   };
+
+  // renderStars was unused — removed to satisfy linter
 
   // Guardar idioma en localStorage cada vez que cambie
   useEffect(() => {
@@ -534,7 +573,7 @@ export default function AIPhotoEditorWaitlist() {
         <div className="container mx-auto px-4 pt-24 pb-40 relative z-10">
           <div className="text-center flex flex-col items-center max-w-5xl mx-auto">
             <div className="fixed hidden md:inline-flex  items-center space-x-2 bg-gradient-to-r z-50 top-10 from-green-400/20 to-blue-400/20 border border-green-400/30 rounded-full px-6 py-3 backdrop-blur-sm">
-              <Sparkles className="h-5 w-5 text-green-400 animate-pulse" />
+                <Sparkles className="h-5 w-5 text-green-400 animate-pulse" />
               <span className="text-sm font-semibold text-green-400">
                 {t.hero.badge}
               </span>
@@ -650,9 +689,10 @@ export default function AIPhotoEditorWaitlist() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-            {t.benefits.list.map((benefit, index) => (
+            {t.benefits.list.map((benefit, index: number) => (
               <div key={index} className="text-center">
                 <div className="bg-gradient-to-r from-purple-500 to-pink-500 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                  {/* benefit.icon is a component */}
                   <benefit.icon className="h-10 w-10 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold mb-4">{benefit.title}</h3>
@@ -678,7 +718,7 @@ export default function AIPhotoEditorWaitlist() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {t.features.list.map((feature, index) => (
+            {t.features.list.map((feature, index: number) => (
               <div
                 key={index}
                 className="bg-white/5 rounded-3xl p-8 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300 transform hover:scale-105"
@@ -724,7 +764,7 @@ export default function AIPhotoEditorWaitlist() {
                   </tr>
                 </thead>
                 <tbody>
-                  {t.comparison.items.map((item, index) => (
+                  {t.comparison.items.map((item, index: number) => (
                     <tr key={index} className="border-b border-white/5">
                       <td className="py-4 text-purple-100">{item.feature}</td>
                       <td className="text-center py-4">
@@ -754,7 +794,7 @@ export default function AIPhotoEditorWaitlist() {
 
       {/* antes y despues */}
       <div className="bg-black/20 backdrop-blur-sm">
-        <BeforeToAfter lang={language} />
+    <BeforeToAfter lang={language as 'en' | 'es'} />
       </div>
 
       {/* Vista previa de precios */}
@@ -770,7 +810,7 @@ export default function AIPhotoEditorWaitlist() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {t.pricing_preview.plans.map((plan, index) => (
+            {t.pricing_preview.plans.map((plan, index: number) => (
               <div
                 key={index}
                 className={`bg-white/10 rounded-3xl p-8 backdrop-blur-sm border border-white/10 relative ${
@@ -801,7 +841,7 @@ export default function AIPhotoEditorWaitlist() {
                     </div>
                   </div>
                   <ul className="space-y-3 mb-8">
-                    {plan.features.map((feature, featureIndex) => (
+                    {plan.features.map((feature, featureIndex: number) => (
                       <li
                         key={featureIndex}
                         className="flex items-center space-x-3"
