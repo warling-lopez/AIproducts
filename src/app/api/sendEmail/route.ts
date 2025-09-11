@@ -55,7 +55,7 @@ export async function POST(request: Request) {
 
         <!-- CTA -->
         <div style="text-align: center; margin: 30px 0;">
-          <a href="https://yourdomain.com" 
+          <a href="https://aiproducto.vercel.app" 
             style="display: inline-block; background: linear-gradient(90deg, #7c3aed, #ec4899); color: white; 
                    padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold;">
             Visit Our Website
@@ -67,10 +67,10 @@ export async function POST(request: Request) {
           Want to help us grow? Share the waitlist with your friends:
         </p>
         <div style="text-align: center; margin-top: 10px;">
-          <a href="https://twitter.com/intent/tweet?text=I+just+joined+the+AI+Product+Photos+waitlist!+Check+it+out:+https://yourdomain.com"
+          <a href="https://twitter.com/intent/tweet?text=I+just+joined+the+AI+Product+Photos+waitlist!+Check+it+out:+https://aiproducto.vercel.app"
              style="margin: 0 8px; color: #1DA1F2; font-weight: bold; text-decoration: none;">Share on X</a>
           |
-          <a href="https://www.reddit.com/submit?url=https://yourdomain.com&title=Join+the+AI+Product+Photos+waitlist!"
+          <a href="https://www.reddit.com/submit?url=https://aiproducto.vercel.app&title=Join+the+AI+Product+Photos+waitlist!"
              style="margin: 0 8px; color: #FF4500; font-weight: bold; text-decoration: none;">Share on Reddit</a>
         </div>
       </div>
