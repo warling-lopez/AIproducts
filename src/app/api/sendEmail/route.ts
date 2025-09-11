@@ -1,22 +1,42 @@
-import { Resend } from "resend";
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function POST(req) {
-  const body = await req.json();
+type Body = {
+  email?: string;
+};
+
+function isValidEmail(email: unknown): email is string {
+  return typeof email === "string" && /\S+@\S+\.\S+/.test(email);
+}
+
+export async function POST(request: Request) {
   try {
-    const {data} = await resend.emails.send({
-    from: "AI Product <onboarding@resend.dev>",
-    to: [body.email],
-    subject: "🎉 You’re on the AI Product Photos Waitlist!",
-    html: `
-  <div style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px;">
+    const body = (await request.json()) as Body;
+
+    if (!body || !isValidEmail(body.email)) {
+      return NextResponse.json(
+        { success: false, error: "Invalid or missing 'email' in request body" },
+        { status: 400 }
+      );
+    }
+
+    const { email } = body;
+
+  
+
+    const resp = await resend.emails.send({
+      from: "AI Product <onboarding@resend.dev>",
+      to: [email],
+      subject: "🎉 You’re on the AI Product Photos Waitlist!",
+      html:`
+    <div style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px;">
     <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
       
       <!-- Header -->
       <div style="background: linear-gradient(90deg, #7c3aed, #ec4899); padding: 20px; text-align: center; color: #000000;">
-        <h1 style="margin: 0; font-size: 24px;">Welcome to the Waitlist!</h1>
+        <h1 style="margin: 0; font-size: 24px;">✨ Welcome to the Waitlist!</h1>
       </div>
 
       <!-- Body -->
@@ -24,7 +44,7 @@ export async function POST(req) {
         <p style="font-size: 16px;">Hi there,</p>
         
         <p style="font-size: 16px; line-height: 1.5;">
-          Thanks for signing up to the <strong>AI Product Photografy waitlist</strong>! 🎉<br>
+          Thanks for signing up to the <strong>AI Product Photos waitlist</strong>! 🎉<br>
           You’re now officially in line to get <strong>early access</strong> as soon as we launch.
         </p>
 
@@ -62,10 +82,11 @@ export async function POST(req) {
     </div>
   </div>
   `,
-  });
+    });
 
-  return NextResponse.json({ success: true, data });
-} catch (error) {
+    return NextResponse.json({ success: true, data: resp });
+  } catch (err) {
+    const error = err instanceof Error ? err.message : String(err);
     return NextResponse.json({ success: false, error }, { status: 500 });
   }
 }
