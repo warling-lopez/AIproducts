@@ -52,7 +52,7 @@ const translations: Record<Lang, TranslationContent> = {
       image_interaction: "✨ ¡Pasa el cursor para ver la magia! ✨",
     },
     features: {
-      title: "Que Ganas los Vendedores con Esta Herramienta",
+      title: "Que Ganan los Vendedores con Esta Herramienta",
       list: [
         { icon: "Crown", title: "Fotos con Calidad de Estudio", description: "Resultados valorados en más de 500 € sin sesión de fotos." },
         { icon: "Users", title: "Modelos y Branding Integrados", description: "Agrega modelos lifestyle, texto de marca o fotos de producto." },
