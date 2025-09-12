@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { supabase } from "@/supabase/supabase";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -23,14 +24,17 @@ export async function POST(request: Request) {
     }
 
     const { email } = body;
-
-  
+    const getUsers = async () => {
+      const { data, error } = await supabase.from("WaitList").insert({ email });
+      if (error) console.error(error);
+      else console.log(data);
+    };
 
     const resp = await resend.emails.send({
       from: "AI Product <onboarding@resend.dev>",
       to: [email],
       subject: "🎉 You’re on the AI Product Photos Waitlist!",
-      html:`
+      html: `
     <div style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px;">
     <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
       
@@ -83,8 +87,9 @@ export async function POST(request: Request) {
   </div>
   `,
     });
-
+    getUsers();
     return NextResponse.json({ success: true, data: resp });
+
   } catch (err) {
     const error = err instanceof Error ? err.message : String(err);
     return NextResponse.json({ success: false, error }, { status: 500 });
