@@ -23,7 +23,6 @@ interface TranslationContent {
     list: Feature[];
   };
 }
-const url:string = "/Gemini_Generated_Image_6frmf46frmf46frm.png";
 const translations: Record<Lang, TranslationContent> = {
   en: {
     hero: {
@@ -87,9 +86,9 @@ export default function BeforeToAfter({ lang = "es" }: Props) {
             className="relative rounded-xl w-full h-full overflow-hidden shadow-2xl mx-auto border border-white/10 cursor-pointer"
             onClick={() => setIsAfterVisible(v => !v)}
           >
-            
-            <Image src={url} alt="Professional Product" fill style={{ objectFit: 'cover' }} className={`absolute inset-0 transition-opacity duration-700 ${isAfterVisible ? 'opacity-100' : 'opacity-0'}`} />
-            <Image src="https://scontent.fjbq1-1.fna.fbcdn.net/v/t45.5328-4/542396160_788147523756858_5762516516922421366_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=102&ccb=1-7&_nc_sid=247b10&_nc_ohc=MJ6JL-iDSgYQ7kNvwHjzQeF&_nc_oc=AdlDvPH-LBwlFU8wG46eGGcSm2XxdDlQPYd_reDaW6yufLImrdxhNhunDyl6yZXRHxg&_nc_zt=23&_nc_ht=scontent.fjbq1-1.fna&_nc_gid=5Q_3OO25qsmO7q3gaU-bew&oh=00_AfbKF-Y6SzTyX1C_DnQnqJtADQag2kQQzzYbSNCB-U9Xdw&oe=68C41E2F" alt="Amateur Product" fill unoptimized style={{ objectFit: 'cover' }} className={`transition-opacity duration-700 ${isAfterVisible ? 'opacity-0' : 'opacity-100'}`} />
+
+            <Image src="/Gemini_Generated_Image_6frmf46frmf46frm.png" alt="Professional Product" fill style={{ objectFit: 'cover' }} className={`absolute inset-0 transition-opacity duration-700 ${isAfterVisible ? 'opacity-100' : 'opacity-0'}`} />
+            <Image src="/542396160_788147523756858_5762516516922421366_n.jpg" alt="Amateur Product" fill unoptimized style={{ objectFit: 'cover' }} className={`transition-opacity duration-700 ${isAfterVisible ? 'opacity-0' : 'opacity-100'}`} />
 
             <div className={`absolute top-4 right-4 bg-black bg-opacity-60 px-3 py-1 rounded-full text-sm font-semibold pointer-events-none transition-opacity duration-500 ${isAfterVisible ? 'opacity-0' : 'opacity-100'}`}><span>Antes</span></div>
             <div className={`absolute top-4 right-4 bg-black bg-opacity-60 px-3 py-1 rounded-full text-sm font-semibold pointer-events-none transition-opacity duration-500 ${isAfterVisible ? 'opacity-100' : 'opacity-0'}`}><span>Después</span></div>
